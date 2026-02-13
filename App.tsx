@@ -7,6 +7,7 @@
 
 import React, { useState } from 'react';
 import { StatusBar, useColorScheme, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import { SplashScreen } from './src/screens/SplashScreen';
@@ -45,6 +46,7 @@ function App() {
       <SafeAreaProvider>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <AppContent />
+        <Toast />
       </SafeAreaProvider>
     </AuthProvider>
   );

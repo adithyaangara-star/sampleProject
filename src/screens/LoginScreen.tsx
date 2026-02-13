@@ -10,12 +10,15 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useNetInfo } from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../contexts/AuthContext';
 import { validateLogin, type LoginValidation } from '../utils/validation';
 
 export function LoginScreen() {
   const insets = useSafeAreaInsets();
+  const netInfo = useNetInfo();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +29,15 @@ export function LoginScreen() {
     const nextErrors = validateLogin(email, password);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
+
+    if (netInfo.isConnected === false) {
+      Toast.show({
+        type: 'error',
+        text1: "You're offline",
+        text2: 'Please check your connection and try again.',
+      });
+      return;
+    }
 
     setLoading(true);
     try {
